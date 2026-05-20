@@ -1,0 +1,746 @@
+/* =====================================================================
+   트레이너 헬퍼 — 랜딩 스타일시트
+   디자인 시스템(design-system.md) 토큰을 :root에 선언, 전부 변수 참조.
+   ===================================================================== */
+
+/* ---------- 1. 디자인 토큰 ---------- */
+:root {
+  /* ── Base (BRIEF 원본) ── */
+  --bg:         #0A0B0E;
+  --card:       #14161C;
+  --card2:      #1A1D26;
+  --gold:       #F5B800;
+  --gold-bright:#FFD24C;
+  --green:      #00E676;
+  --red:        #FF4757;
+  --blue:       #4AB8FF;
+  --text:       #FFFFFF;
+  --muted:      #9BA1AD;
+  --line:       rgba(255, 255, 255, 0.08);
+
+  /* ── 파생/확장 ── */
+  --text-soft:  #D5D8DE;
+  --muted-2:    #6B7280;
+  --gold-12:    rgba(245, 184, 0, 0.12);
+  --gold-30:    rgba(245, 184, 0, 0.30);
+  --red-40:     rgba(255, 71, 87, 0.40);
+  --green-14:   rgba(0, 230, 118, 0.14);
+  --white-06:   rgba(255, 255, 255, 0.06);
+
+  /* ── 그라데이션 / 글로우 ── */
+  --grad-gold:  linear-gradient(135deg, var(--gold-bright), var(--gold));
+  --grad-card:  linear-gradient(160deg, var(--card2), var(--card));
+  --glow-hero:  radial-gradient(ellipse 80% 60% at 50% 0%, rgba(245, 184, 0, 0.12), transparent 70%);
+  --glow-final: radial-gradient(ellipse at center, rgba(245, 184, 0, 0.15), var(--card));
+
+  /* ── 타이포 ── */
+  --font: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --fs-h1:   clamp(34px, 6vw, 60px);
+  --fs-h2:   clamp(28px, 4vw, 42px);
+  --fs-h3:   clamp(20px, 2.4vw, 22px);
+  --fs-lead: clamp(16px, 2.5vw, 21px);
+  --fs-body: 15px;
+  --fs-sm:   14px;
+  --fs-xs:   13px;
+  --fs-tag:  15px;
+
+  /* ── 간격 (8px 베이스) ── */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px;
+  --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 90px;
+  --container: 1080px;
+  --gutter: 24px;
+
+  /* ── 라운드 ── */
+  --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 22px; --r-2xl: 30px; --r-pill: 999px;
+
+  /* ── 그림자 / 글로우 ── */
+  --sh-card:  0 8px 30px rgba(0, 0, 0, 0.35);
+  --sh-cta:   0 10px 40px rgba(245, 184, 0, 0.35);
+  --sh-cta-h: 0 14px 50px rgba(245, 184, 0, 0.45);
+  --sh-pop:   0 20px 60px rgba(245, 184, 0, 0.15);
+
+  /* ── z-index ── */
+  --z-nav: 100; --z-overlay: 150; --z-mobile-menu: 200;
+}
+
+/* ---------- 2. 리셋 / 베이스 ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scrollbar-gutter: stable;        /* 모바일 메뉴 토글 시 레이아웃 시프트 예방 */
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (min-width: 769px) {
+  body { font-size: 16px; }
+}
+
+img, svg { max-width: 100%; }
+svg { display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+h1, h2, h3, h4, p, ul, ol { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+
+/* 앵커 클릭 시 sticky nav 가림 방지 */
+section[id], #top { scroll-margin-top: 72px; }
+
+/* 접근성: 본문 바로가기 */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  padding: 10px 16px;
+  background: var(--gold);
+  color: #0A0B0E;
+  border-radius: 0 0 var(--r-sm) 0;
+  font-weight: 800;
+}
+.skip-link:focus { left: 0; }
+
+/* 스크린리더 전용 (시각적으로 숨김, AT엔 노출) */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 공통 컨테이너 */
+.wrap {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+/* 포커스 링 (모든 인터랙티브 공통) */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--gold-bright);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+/* ---------- 3. 버튼 ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 800;
+  text-align: center;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, color .15s ease;
+  min-height: 44px;
+}
+
+.btn-primary {
+  background: var(--grad-gold);
+  color: #0A0B0E;
+  font-size: 18px;
+  padding: 16px 34px;
+  box-shadow: var(--sh-cta);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: var(--sh-cta-h); }
+.btn-primary:active { transform: translateY(-1px); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+  font-size: 18px;
+  padding: 16px 30px;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+.btn-cta-sm {
+  background: var(--gold);
+  color: #0A0B0E;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: var(--r-sm);
+  min-height: 40px;
+}
+.btn-cta-sm:hover { transform: translateY(-2px); }
+
+@media (min-width: 769px) {
+  .btn-primary { padding: 17px 38px; }
+  .btn-ghost { padding: 17px 32px; }
+}
+
+/* ---------- 4. NAV ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  background: rgba(10, 11, 14, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.logo {
+  color: var(--gold);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.3px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+}
+.nav-links > a:not(.btn) {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  padding: 8px 4px;
+  transition: color .15s ease;
+}
+.nav-links > a:not(.btn):hover { color: var(--text); }
+.nav-login { font-weight: 700 !important; }
+
+/* 햄버거 (모바일 전용) */
+.hamburger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+.hamburger-box {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+}
+.hamburger-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform .25s ease, opacity .2s ease;
+}
+.hamburger[aria-expanded="true"] .hamburger-line:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.hamburger[aria-expanded="true"] .hamburger-line:nth-child(2) { opacity: 0; }
+.hamburger[aria-expanded="true"] .hamburger-line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* 모바일 메뉴 패널 */
+.mobile-menu {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  z-index: var(--z-mobile-menu);
+  background: var(--card2);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--sh-card);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.mobile-menu:not([hidden]) { opacity: 1; transform: translateY(0); }
+.mobile-menu-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--gutter) var(--sp-5);
+}
+.mobile-menu-inner > a:not(.btn) {
+  color: var(--text-soft);
+  font-size: 17px;
+  font-weight: 600;
+  padding: 14px 4px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+.mobile-menu-inner .mobile-cta {
+  width: 100%;
+  margin-top: var(--sp-3);
+  font-size: 17px;
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- 5. 섹션 공통 ---------- */
+.section { padding: var(--sp-8) 0; }
+@media (min-width: 1025px) {
+  .section { padding: var(--sp-9) 0; }
+}
+
+.sec-head {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--sp-7);
+}
+.sec-tag {
+  color: var(--gold);
+  font-size: var(--fs-tag);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: var(--sp-3);
+}
+.sec-title {
+  font-size: var(--fs-h2);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -1px;
+}
+.sec-desc {
+  margin-top: var(--sp-4);
+  color: var(--muted);
+}
+.lead {
+  font-size: var(--fs-lead);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* 그리드 베이스 (mobile-first 1열) */
+.grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+
+/* 카드 공통 */
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 28px 22px;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+@media (min-width: 769px) {
+  .card { padding: 36px 30px; }
+}
+.card-title {
+  font-size: var(--fs-h3);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.3px;
+  margin-bottom: var(--sp-3);
+}
+.card-desc { color: var(--muted); }
+
+/* 아이콘 칩 */
+.icon-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: var(--r-md);
+  background: var(--gold-12);
+  color: var(--gold);
+  margin-bottom: var(--sp-4);
+}
+.icon-chip svg { width: 30px; height: 30px; }
+.icon-chip-sub { background: var(--white-06); color: var(--text-soft); }
+
+/* ---------- 6. HERO ---------- */
+.hero {
+  background: var(--glow-hero);
+  text-align: center;
+  padding: 60px 0 50px;
+}
+@media (min-width: 1025px) {
+  .hero { padding: 90px 0 70px; }
+}
+.hero-inner { max-width: 760px; margin: 0 auto; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: var(--gold-12);
+  border: 1px solid var(--gold-30);
+  color: var(--gold);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  padding: 7px 18px;
+  border-radius: var(--r-pill);
+  margin-bottom: var(--sp-5);
+}
+.badge-ico { flex: none; }
+
+.hero-title {
+  font-size: var(--fs-h1);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+}
+.hl { color: var(--gold); }
+.hl-red { color: var(--red); }
+
+.hero-sub {
+  margin: var(--sp-5) auto 0;
+  max-width: 600px;
+  color: var(--text-soft);
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: var(--sp-6);
+}
+.hero-note {
+  margin-top: var(--sp-4);
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+
+@media (max-width: 480px) {
+  .hero-cta .btn { width: 100%; }
+}
+
+/* ---------- 7. S3 문제 제기 ---------- */
+.prob-card {
+  background: var(--card);
+  border-radius: var(--r-lg);
+}
+.prob-card:hover { transform: translateY(-6px); border-color: var(--red-40); }
+.prob-ico { font-size: 40px; line-height: 1; display: block; margin-bottom: var(--sp-4); }
+.prob-quote {
+  color: var(--red);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: var(--sp-3);
+}
+
+/* ---------- 8. S4 핵심 기능 ---------- */
+.feat-card { background: var(--grad-card); position: relative; }
+.feat-card:hover { transform: translateY(-6px); border-color: var(--gold-30); }
+.feat-key { border-color: var(--gold-30); }
+.key-tag {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: var(--gold-12);
+  border: 1px solid var(--gold-30);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+}
+
+/* ---------- 9. S5 부가 기능 ---------- */
+.sub-card { background: var(--card); }
+.sub-card:hover { transform: translateY(-6px); border-color: rgba(255, 255, 255, 0.12); }
+.tier-chip {
+  display: inline-block;
+  margin-top: var(--sp-4);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+}
+
+/* ---------- 10. S6 작동 방식 ---------- */
+.grid-steps { gap: 24px; counter-reset: step; }
+.step {
+  text-align: center;
+  padding: var(--sp-4);
+}
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: var(--r-pill);
+  background: var(--grad-gold);
+  color: #0A0B0E;
+  font-size: 30px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: var(--sp-4);
+}
+
+/* ---------- 11. S7 요금제 ---------- */
+.grid-price { gap: 24px; align-items: stretch; }
+.price-card {
+  background: var(--card);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.price-card.popular {
+  border: 2px solid var(--gold);
+  background: linear-gradient(160deg, rgba(245, 184, 0, 0.08), var(--card));
+  box-shadow: var(--sh-pop);
+}
+.pop-tag {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: #0A0B0E;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 6px 18px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+.price-name {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: var(--sp-2);
+}
+.price-concept {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  min-height: 42px;
+  margin-bottom: var(--sp-5);
+}
+.price-list { display: flex; flex-direction: column; gap: var(--sp-3); margin-bottom: var(--sp-6); }
+.price-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  font-size: var(--fs-sm);
+}
+.price-list .li-ico {
+  flex: none;
+  width: 20px;
+  text-align: center;
+  font-weight: 800;
+}
+.price-list li.ok { color: var(--text-soft); }
+.price-list li.ok .li-ico { color: var(--green); }
+.price-list li.no { color: var(--muted); }            /* 본문 AA 4.5:1 확보 (card 위 ~7:1) */
+.price-list li.no .li-ico { color: var(--muted-2); }  /* 약화는 '–' 아이콘에만 */
+.price-cta { width: 100%; margin-top: auto; font-size: 16px; padding: 14px 24px; }
+
+/* ---------- 12. S8 FAQ ---------- */
+.faq { max-width: 760px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--line); }
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: 20px 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-soft);
+  list-style: none;
+  transition: color .15s ease;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:hover { color: var(--text); }
+.faq-ico {
+  position: relative;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  transition: transform .25s ease;
+}
+.faq-ico::before,
+.faq-ico::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--gold);
+  border-radius: 2px;
+  transform: translate(-50%, -50%);
+}
+.faq-ico::before { width: 14px; height: 2px; }
+.faq-ico::after { width: 2px; height: 14px; }
+.faq-item[open] .faq-ico::after { opacity: 0; }
+.faq-item[open] summary { color: var(--text); }
+.faq-panel {
+  padding: 0 8px 20px;
+  color: var(--muted);
+}
+.faq-panel p { max-width: 620px; }
+
+/* ---------- 13. S9 최종 CTA ---------- */
+.final-banner {
+  background: var(--glow-final);
+  border: 1px solid var(--gold-30);
+  border-radius: var(--r-2xl);
+  text-align: center;
+  padding: 56px 24px;
+}
+@media (min-width: 769px) {
+  .final-banner { padding: 90px 40px; }
+}
+.final-title {
+  font-size: var(--fs-h2);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -1px;
+}
+.final-sub {
+  margin: var(--sp-4) auto var(--sp-6);
+  max-width: 520px;
+  color: var(--muted);
+}
+
+/* ---------- 14. FOOTER ---------- */
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 40px 0;
+  background: var(--bg);
+}
+@media (min-width: 769px) {
+  .footer { padding: 50px 0; }
+}
+.f-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--sp-6);
+  margin-bottom: var(--sp-6);
+}
+.f-brand .logo { display: inline-block; margin-bottom: var(--sp-3); }
+.f-desc { color: var(--muted); font-size: var(--fs-sm); max-width: 320px; }
+.f-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3) var(--sp-5);
+}
+.f-links a {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  padding: 11px 2px;
+  min-height: 44px;          /* 터치 타겟 44px+ */
+  display: inline-flex;
+  align-items: center;
+  transition: color .15s ease;
+}
+.f-links a:hover { color: var(--gold); }
+
+.biz-info {
+  color: var(--muted-2);
+  font-size: var(--fs-xs);
+  line-height: 1.9;
+  border-top: 1px solid var(--line);
+  padding-top: var(--sp-5);
+  margin-bottom: var(--sp-5);
+}
+.biz-info p { margin: 0; }
+.copyright { color: var(--muted-2); font-size: var(--fs-xs); }
+
+/* ---------- 15. 스크롤 리빌 ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .4s ease, transform .4s ease;
+  will-change: opacity, transform;
+}
+.reveal.show { opacity: 1; transform: none; }
+
+/* 스태거: 카드 그룹 (기능 카드 7개까지 리듬 유지) */
+.grid .reveal:nth-child(2) { transition-delay: .06s; }
+.grid .reveal:nth-child(3) { transition-delay: .12s; }
+.grid .reveal:nth-child(4) { transition-delay: .18s; }
+.grid .reveal:nth-child(5) { transition-delay: .24s; }
+.grid .reveal:nth-child(6) { transition-delay: .30s; }
+.grid .reveal:nth-child(7) { transition-delay: .36s; }
+
+/* body 스크롤 락 */
+body.no-scroll { overflow: hidden; }
+
+/* =====================================================================
+   16. 반응형 (3구간: ≤768 / 769–1024 / ≥1025)
+   ===================================================================== */
+
+/* 태블릿: 769–1024 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .grid-prob { grid-template-columns: repeat(2, 1fr); }
+  .grid-feat { grid-template-columns: repeat(2, 1fr); }
+  .grid-sub  { grid-template-columns: repeat(3, 1fr); }
+  .grid-steps{ grid-template-columns: repeat(3, 1fr); }
+  .grid-price{ grid-template-columns: repeat(3, 1fr); }
+}
+
+/* 데스크탑: ≥1025 */
+@media (min-width: 1025px) {
+  .grid-prob { grid-template-columns: repeat(4, 1fr); }
+  .grid-feat { grid-template-columns: repeat(3, 1fr); }
+  .grid-feat .feat-wide { grid-column: span 2; } /* 7번째 카드 2칸 = 빈칸 방지 */
+  .grid-sub  { grid-template-columns: repeat(3, 1fr); }
+  .grid-steps{ grid-template-columns: repeat(3, 1fr); }
+  .grid-price{ grid-template-columns: repeat(3, 1fr); }
+}
+
+/* 모바일: ≤768 — 햄버거, 1열 (그리드 기본값 1열 유지) */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: inline-flex; }
+
+  /* 모바일에서 추천 카드를 맨 위로 (선택 가이드) */
+  .grid-price { display: flex; flex-direction: column; }
+  .price-card.popular { order: -1; margin-top: 14px; }
+}
+
+/* 초소형: ≤400 — gutter 축소 */
+@media (max-width: 400px) {
+  :root { --gutter: 16px; }
+}
+
+/* =====================================================================
+   17. prefers-reduced-motion — 모션 전부 비활성, 즉시 표시
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}

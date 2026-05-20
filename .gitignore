@@ -1,0 +1,7 @@
+# 끼리끼리 팀 작업공간 (내부 메모 — 배포/공개 대상 아님)
+.kkirikkiri/
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+*.log
