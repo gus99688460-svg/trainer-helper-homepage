@@ -78,9 +78,12 @@ body {
   color: var(--text);
   font-family: var(--font);
   font-size: var(--fs-body);
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* 한글은 단어 단위로 줄바꿈(어절 중간 끊김 방지) — 모바일 가독성 핵심 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 @media (min-width: 769px) {
@@ -412,6 +415,7 @@ summary:focus-visible {
 }
 .hl { color: var(--gold); }
 .hl-red { color: var(--red); }
+.hl-inline { color: var(--gold); font-weight: 800; white-space: nowrap; }
 
 .hero-sub {
   margin: var(--sp-5) auto 0;
@@ -503,13 +507,96 @@ summary:focus-visible {
   margin-bottom: var(--sp-4);
 }
 
-/* ---------- 11. S7 요금제 ---------- */
-.grid-price { gap: 24px; align-items: stretch; }
+/* ---------- 10.5 브랜드 철학 (creed) ---------- */
+.creed {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  background: var(--grad-card);
+  border: 1px solid var(--gold-30);
+  border-radius: var(--r-2xl);
+  padding: 44px 26px;
+}
+@media (min-width: 769px) {
+  .creed { padding: 64px 56px; }
+}
+.creed-tag {
+  color: var(--gold);
+  font-size: var(--fs-tag);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: var(--sp-4);
+}
+.creed-quote {
+  margin: 0;
+  font-size: clamp(20px, 3.2vw, 28px);
+  font-weight: 800;
+  line-height: 1.55;
+  letter-spacing: -0.4px;
+}
+.creed-body {
+  margin-top: var(--sp-5);
+  color: var(--muted);
+  font-size: var(--fs-lead);
+  line-height: 1.75;
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.creed-body strong { color: var(--text-soft); font-weight: 700; }
+
+/* ---------- 11. S7 요금제 (포인트 충전제) ---------- */
+.grid-price { gap: 24px; align-items: stretch; max-width: 800px; margin: 0 auto; }
 .price-card {
   background: var(--card);
   display: flex;
   flex-direction: column;
   position: relative;
+}
+
+/* 가격 헤드 (1P=10원 / 29,900원/월) */
+.price-amount {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+  padding-bottom: var(--sp-5);
+  border-bottom: 1px solid var(--line);
+}
+.price-num { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+.price-per { font-size: var(--fs-sm); color: var(--muted); font-weight: 600; }
+
+/* 포인트 단가 리스트 */
+.point-list { margin-bottom: var(--sp-4); }
+.point-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-sm);
+}
+.point-list li:last-child { border-bottom: none; }
+.pt-label { color: var(--text-soft); font-weight: 600; }
+.pt-cost {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  color: var(--gold);
+  font-weight: 800;
+  font-size: 16px;
+  white-space: nowrap;
+}
+.pt-cost em { color: var(--muted); font-weight: 600; font-size: var(--fs-xs); font-style: normal; }
+.pt-free { color: var(--green); }
+
+/* 안내 푸터 한 줄 */
+.price-foot {
+  color: var(--muted-2);
+  font-size: var(--fs-xs);
+  margin: 0 0 var(--sp-5);
 }
 .price-card.popular {
   border: 2px solid var(--gold);
@@ -646,6 +733,19 @@ summary:focus-visible {
 }
 .f-brand .logo { display: inline-block; margin-bottom: var(--sp-3); }
 .f-desc { color: var(--muted); font-size: var(--fs-sm); max-width: 320px; }
+.f-insta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  min-height: 44px;
+  transition: color .15s ease;
+}
+.f-insta:hover { color: var(--gold); }
+.f-insta svg { flex: none; }
 .f-links {
   display: flex;
   flex-wrap: wrap;
@@ -703,7 +803,7 @@ body.no-scroll { overflow: hidden; }
   .grid-feat { grid-template-columns: repeat(2, 1fr); }
   .grid-sub  { grid-template-columns: repeat(3, 1fr); }
   .grid-steps{ grid-template-columns: repeat(3, 1fr); }
-  .grid-price{ grid-template-columns: repeat(3, 1fr); }
+  .grid-price{ grid-template-columns: repeat(2, 1fr); }
 }
 
 /* 데스크탑: ≥1025 */
@@ -713,7 +813,7 @@ body.no-scroll { overflow: hidden; }
   .grid-feat .feat-wide { grid-column: span 2; } /* 7번째 카드 2칸 = 빈칸 방지 */
   .grid-sub  { grid-template-columns: repeat(3, 1fr); }
   .grid-steps{ grid-template-columns: repeat(3, 1fr); }
-  .grid-price{ grid-template-columns: repeat(3, 1fr); }
+  .grid-price{ grid-template-columns: repeat(2, 1fr); }
 }
 
 /* 모바일: ≤768 — 햄버거, 1열 (그리드 기본값 1열 유지) */
@@ -721,9 +821,15 @@ body.no-scroll { overflow: hidden; }
   .nav-links { display: none; }
   .hamburger { display: inline-flex; }
 
-  /* 모바일에서 추천 카드를 맨 위로 (선택 가이드) */
+  /* 요금제: 1열로 쌓되 HTML 순서(포인트 충전 → 무제한권) 유지 */
   .grid-price { display: flex; flex-direction: column; }
-  .price-card.popular { order: -1; margin-top: 14px; }
+  .price-card.popular { margin-top: 14px; }   /* '매일 쓴다면 이득' 태그 잘림 방지 */
+
+  /* 큰 제목 자간 완화 — 좁은 화면에서 한글 단어가 들러붙는 현상 방지 */
+  .hero-title { letter-spacing: -0.5px; }
+  .sec-title,
+  .final-title,
+  .creed-quote { letter-spacing: -0.2px; }
 }
 
 /* 초소형: ≤400 — gutter 축소 */

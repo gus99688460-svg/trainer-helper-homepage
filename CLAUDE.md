@@ -52,8 +52,15 @@ There is nothing to build or compile — edit a file, reload the browser.
 - Accessibility is a maintained baseline: `<html lang="ko">`, semantic landmarks, visible focus rings, 44px touch
   targets, `.sr-only` labels (e.g. 포함/미포함 in the pricing list so meaning isn't color-only). Preserve these when editing.
 
-- The footer pricing section shows **feature comparison only, no prices** (a product decision). Footer business info
-  (상호/대표자/사업자등록번호 etc.) is real, live data — verify before changing.
+- The pricing section uses a **point/credit model** (1P = ₩10): per-analysis 신규 100P / 재등록 150P / 클로징 200P,
+  plus a 무제한권 (unlimited) at ₩29,900/월 — rendered as two cards (포인트 충전 vs 무제한권, `grid-price` is 2-col now).
+  **Prices ARE shown**; this replaced the earlier no-price tier model (베이직/스탠다드/프로, removed 2026-05-21). Signup is
+  open to anyone (회원가입 무료, 분석할 때만 포인트 차감) — the earlier 초대제(invite-only) copy was removed too. Keep all
+  figures faithful to the product. Footer business info (상호/대표자/사업자등록번호 etc.) is real, live data — verify before changing.
+
+- A **brand-creed section** (`.creed`, "우리가 이 도구를 만든 이유") sits between 작동방식 and 요금제 — it carries the core
+  tone ("말기술로 돈 뜯는 도구가 아니라 좋은 트레이너를 돕는 진정성 있는 서비스"). Keep this tone when editing copy.
+  Instagram (@trainer_helper_) is linked in the footer (`.f-insta`). Korean text uses `word-break: keep-all` globally.
 
 - `.kkirikkiri/` is the agent-team workspace from the `/kkirikkiri` build session (planning docs, copy/design specs,
   review reports). It is **not part of the shipped site** — ignore it when editing the page.
