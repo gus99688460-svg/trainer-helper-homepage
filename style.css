@@ -891,6 +891,11 @@ body.no-scroll { overflow: hidden; }
   .sec-title,
   .final-title,
   .creed-quote { letter-spacing: -0.2px; }
+
+  /* 모바일 요약: 섹션 간격을 줄여 전체 스크롤 길이 단축 */
+  .section { padding: var(--sp-7) 0; }
+  .sec-head { margin-bottom: var(--sp-6); }
+  .grid { gap: 14px; }
 }
 
 /* 초소형: ≤400 — gutter 축소 */
