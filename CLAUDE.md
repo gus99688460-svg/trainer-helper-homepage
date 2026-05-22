@@ -62,6 +62,10 @@ There is nothing to build or compile — edit a file, reload the browser.
   tone ("말기술로 돈 뜯는 도구가 아니라 좋은 트레이너를 돕는 진정성 있는 서비스"). Keep this tone when editing copy.
   Instagram (@trainer_helper_) is linked in the footer (`.f-insta`). Korean text uses `word-break: keep-all` globally.
 
+- A **value/ROI banner** (`.roi`, "커피 한 잔 값으로…") sits right before 요금제, framing cost-vs-value
+  (1,000원 분석 ↔ 수백만 원 PT 등록, 재등록 누적 수천만 원). It is deliberately a **conditional comparison, not a
+  guaranteed result** — keep it that way: no "보장"/measured-revenue claims (consistent with the no-fake-stats rule).
+
 - `.kkirikkiri/` is the agent-team workspace from the `/kkirikkiri` build session (planning docs, copy/design specs,
   review reports). It is **not part of the shipped site** — ignore it when editing the page.
 
