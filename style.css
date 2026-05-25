@@ -507,6 +507,18 @@ summary:focus-visible {
   margin-bottom: var(--sp-4);
 }
 
+/* 실제 앱 사용 예시 스크린샷 (원본 비율 유지, 크기만 통일) */
+.step-img {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;                 /* 비율 왜곡 없이 원본 그대로 */
+  margin: var(--sp-5) auto 0;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh-card);
+}
+
 /* ---------- 10.5 브랜드 철학 (creed) ---------- */
 .creed {
   max-width: 760px;
